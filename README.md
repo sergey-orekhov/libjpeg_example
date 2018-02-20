@@ -18,13 +18,13 @@ the following functionalities are supported:
 
 original image:
 
-![images\source.jpeg](images\source.jpeg)
+![images/source.jpeg](images/source.jpeg)
 
 results examples:
 
-![images\output_no_color.jpeg](images\output_no_color.jpeg)
-![images\output_mirror.jpeg](images\output_mirror.jpeg)
-![images\output_no_color_mirror_scale_0_8.jpeg](images\output_no_color_mirror_scale_0_8.jpeg)
+![images/output_no_color.jpeg](images/output_no_color.jpeg)
+![images/output_mirror.jpeg](images/output_mirror.jpeg)
+![images/output_no_color_mirror_scale_0_8.jpeg](images/output_no_color_mirror_scale_0_8.jpeg)
 
 
 output examples:
