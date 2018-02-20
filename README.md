@@ -17,8 +17,7 @@ the following functionalities are supported:
  * encode to jpeg format and write to file
 
 results examples:
-![output_no_effects.jpeg](output_no_effects.jpeg)
-![output_quality_20.jpeg](output_quality_20.jpeg)
+
 ![output_no_color.jpeg](output_no_color.jpeg)
 ![output_mirror.jpeg](output_mirror.jpeg)
 ![output_no_color_mirror_scale_0_8.jpeg](output_no_color_mirror_scale_0_8.jpeg)
