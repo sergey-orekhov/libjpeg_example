@@ -16,6 +16,10 @@ the following functionalities are supported:
  * scale the image
  * encode to jpeg format and write to file
 
+original image:
+
+![source.jpeg](source.jpeg)
+
 results examples:
 
 ![output_no_color.jpeg](output_no_color.jpeg)
