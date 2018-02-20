@@ -1,0 +1,134 @@
+#include "stdlib.h"
+#include "stdio.h"
+#include "string.h"
+#include "stdbool.h"
+
+#include "jpeglib.h"
+
+
+bool verbose = false;
+bool exit_with_help = false;
+const char* src_file_name = NULL;
+const char* dst_file_name = NULL;
+const char* default_dst_file_name = "out.jpeg";
+FILE* src_file = NULL;
+FILE* dst_file = NULL;
+
+void show_help() {
+    printf("Usage: main [OPTION]... [FILE]...\n");
+    printf("Redecode the given jpeg image file.\n");
+    printf("\nOptions:\n  --help\tdisplay this help and exit\n");
+    printf("\nExit status:\n 0\tif OK,\n 1\tin case of problem.\n");
+    
+    // TODO oupdate it
+    
+    exit_with_help = true;
+}
+
+void process_argument(const char* arg) {
+    if (verbose) {
+        printf("Process arg %s\n", arg);
+    }
+    
+    if (strcmp(arg, "--help") == 0) {
+        show_help();
+    }
+    else if (strcmp(arg, "--verbose") == 0) {
+        verbose = true;
+    }
+    else if (strcmp(arg, "-v") == 0) {
+        verbose = true;
+    }
+    else if (strncmp(arg, "in=", 3) == 0) {
+        src_file_name = arg + 3;
+    }
+    else if (strncmp(arg, "out=", 4) == 0) {
+        dst_file_name = arg + 4;
+    }
+    // other possible options
+    else {
+
+    }
+}
+
+int main(int argv, const char** argc) {
+    // first of all process options
+    for (int i=1; i<argv; i++) {
+        process_argument(argc[i]);
+        
+        if (exit_with_help) {
+            // help has been requested by user
+            return 0;
+        }
+    }
+
+    // check if the file given
+    if (src_file_name == 0) {
+        printf("Not enough arguments. Source file is required.\n");
+        show_help();
+        return 1;
+    }
+    
+    if (dst_file_name == 0) {
+        dst_file_name = default_dst_file_name;
+    }
+    
+    if (verbose) {
+        printf("Input file:  %s\nOutput file: %s\n", src_file_name, dst_file_name);
+    }
+
+    bool error_opening_files = false;
+    
+    // open source file
+    if ((src_file = fopen(src_file_name, "rb")) == NULL) {
+        printf("Unable to open file %s\n", src_file_name);
+        error_opening_files = true;
+    }
+    
+    // open destination file
+    if ((dst_file = fopen(dst_file_name, "wb")) == NULL) {
+        printf("Unable to create file %s\n", dst_file_name);
+        error_opening_files = true;
+    }
+    
+    if (error_opening_files) {
+        if (src_file != NULL) {
+            fclose(src_file);
+        }
+        
+        if (dst_file != NULL) {
+            fclose(dst_file);
+        }
+        
+        return 1;
+    }
+    
+    printf("Run...\n");
+    
+    // decompressor
+    struct jpeg_decompress_struct dcinfo;
+    struct jpeg_error_mgr jerr;
+    
+    dcinfo.err = jpeg_std_error(&jerr);
+    jpeg_create_decompress(&dcinfo);
+    
+    
+    jpeg_stdio_src(&dcinfo, src_file);
+    
+    jpeg_read_header(&dcinfo, TRUE);
+    
+    printf("image_width=%d\n", dcinfo.image_width);
+    printf("image_height=%d\n", dcinfo.image_height);
+    
+    //
+    
+    jpeg_destroy_decompress(&dcinfo);
+    
+    
+    fclose(src_file);
+    
+    
+    
+    
+    return 0;
+}
